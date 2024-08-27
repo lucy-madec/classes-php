@@ -1,4 +1,6 @@
 <?php
+// On démarre une session
+session_start();
 
 // Inclusion de la connexion à la base
 require_once('connect.php');
