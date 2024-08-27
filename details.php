@@ -6,5 +6,6 @@ session_start();
 if(isset($_GET["id"]) && !empty($_GET['id'])) {
 
 } else {
+    $_SESSION['erreur'] = "URL invalide";
     header('Location : index.php');
 }
