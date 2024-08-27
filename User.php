@@ -99,7 +99,7 @@ $user = new User("localhost", "root", "", "classes");
 
 // Créer un nouvel utilisateur
 if ($user->create("john_doe", "password123", "john@example.com", "John", "Doe")) {
-    echo "Utilisateur ajouté à la base de données<br>";
+    echo "<p style='color: green;'>Utilisateur ajouté à la base de données avec succès.</p>";
 
     // Lire l'utilisateur ajouté (en supposant que c'est le dernier ajouté)
     // Utilisez mysqli_insert_id pour obtenir l'ID du dernier enregistrement ajouté
