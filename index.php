@@ -36,25 +36,19 @@ require_once('close.php');
                     <thead>
                         <th>ID</th>
                         <th>Login</th>
-                        <th>Password</th>
-                        <th>Mail</th>
-                        <th>Firstname</th>
-                        <th>Lastname</th>
+                        <th>Détails</th>
                     </thead>
                     <tbody>
                         <?php
                         // On boucle sur la variable result
                         foreach ($result as $login) {
-                        ?>
+                            ?>
                             <tr>
                                 <td><?= $login['id'] ?></td>
                                 <td><?= $login['login'] ?></td>
-                                <td><?= $login['password'] ?></td>
-                                <td><?= $login['email'] ?></td>
-                                <td><?= $login['firstname'] ?></td>
-                                <td><?= $login['lastname'] ?></td>
+                                <td><a href="details.php?id=<?= $login['id'] ?>">Voir</a></td>
                             </tr>
-                        <?php
+                            <?php
                         }
                         ?>
                     </tbody>
