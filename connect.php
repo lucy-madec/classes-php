@@ -1,7 +1,7 @@
 <?php
 try{
     // Connexion à la base
-    $db = new PDO("mysql:host=localhost;dbname=crud","root","");
+    $db = new PDO("mysql:host=localhost;dbname=classes","root","");
     $db->exec('SET NAMES "UTF8"');
 
 } catch (PDOException $e) {
