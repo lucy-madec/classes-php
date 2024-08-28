@@ -1,21 +1,21 @@
 <?php
-require_once 'User.php'; // Inclusion de la classe User
+require_once 'User.php'; // Inclusion of the User class
 
-$user = new User("localhost", "root", "", "classes"); // Création d'un objet User
+$user = new User("localhost", "root", "", "classes"); // Creating a User object
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Vérifie si le formulaire a été soumis
-    $login = $_POST['login']; // Récupération des données du formulaire
+if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Checks if the form has been submitted
+    $login = $_POST['login']; // Retrieving form data
     $password = $_POST['password'];
     $email = $_POST['email'];
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
 
-    // Appel de la méthode register pour inscrire l'utilisateur
+    // Call register method to register user
     if ($user->register($login, $password, $email, $firstname, $lastname)) {
         header("Location: login.php");
-        exit(); // Redirection vers la page de connexion en cas de succès
+        exit(); // Redirect to login page on success
     } else {
-        $error = "Erreur lors de l'inscription."; // Affichage d'un message d'erreur en cas d'échec
+        $error = "Erreur lors de l'inscription."; // Error message displayed in case of failure
     }
 }
 ?>
