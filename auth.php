@@ -1,12 +1,12 @@
 <?php
-session_start(); // Démarre une session pour suivre les utilisateurs connectés
+session_start(); // Start a session to track connected users
 
-// Vérifie si un utilisateur est connecté
+// Checks if a user is logged in
 function isLoggedIn() {
     return isset($_SESSION['user_id']);
 }
 
-// Redirige l'utilisateur vers la page de connexion s'il n'est pas connecté
+// Redirects user to login page if not logged in
 function redirectIfNotLoggedIn() {
     if (!isLoggedIn()) {
         header("Location: login.php");
@@ -14,10 +14,10 @@ function redirectIfNotLoggedIn() {
     }
 }
 
-// Déconnecte l'utilisateur en détruisant la session
+// Disconnects the user, destroying the session
 function logout() {
-    session_unset(); // Supprime toutes les variables de session
-    session_destroy(); // Détruit la session en cours
+    session_unset(); // Deletes all session variables
+    session_destroy(); // Destroys the current session
     header("Location: login.php");
     exit();
 }
