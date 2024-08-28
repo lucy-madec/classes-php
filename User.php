@@ -1,81 +1,81 @@
 <?php
 class User {
-    private $conn; // Connexion à la base de données
+    private $conn; // Database connection
 
-    // Constructeur de la classe User, initialise la connexion à la base de données
+    // User class constructor, initializes database connection
     public function __construct($servername, $username, $password, $dbname) {
-        // Création d'une nouvelle connexion mysqli
+        // Creating a new mysqli connection
         $this->conn = new mysqli($servername, $username, $password, $dbname);
         
-        // Vérification de la connexion
+        // Connection check
         if ($this->conn->connect_error) {
             die("Connexion échouée: " . $this->conn->connect_error);
         }
     }
 
-    // Méthode pour enregistrer un nouvel utilisateur dans la base de données
+    // How to register a new user in the database
     public function register($login, $password, $email, $firstname, $lastname) {
-        // Préparation de la requête SQL pour insérer un nouvel utilisateur
+        // Preparing the SQL query to insert a new user
         $stmt = $this->conn->prepare("INSERT INTO utilisateurs (login, password, email, firstname, lastname) VALUES (?, ?, ?, ?, ?)");
         if (!$stmt) {
             die("Erreur de préparation : " . $this->conn->error);
         }
 
-        // Hachage du mot de passe pour sécuriser le stockage
+        // Password hashing for secure storage
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        // Liaison des paramètres à la requête préparée
+        // Linking parameters to the prepared query
         $stmt->bind_param("sssss", $login, $hashed_password, $email, $firstname, $lastname);
 
-        // Exécution de la requête et retour du résultat
+        // Executing the query and returning the result
         return $stmt->execute();
     }
 
-    // Méthode pour vérifier les informations de connexion d'un utilisateur
+    // How to check a user's login details
     public function login($login, $password) {
-        // Préparation de la requête SQL pour sélectionner l'utilisateur par son login
+        // Prepare SQL query to select user by login
         $stmt = $this->conn->prepare("SELECT * FROM utilisateurs WHERE login = ?");
         $stmt->bind_param("s", $login);
         $stmt->execute();
 
-        // Récupération du résultat de la requête
+        // Retrieving query results
         $result = $stmt->get_result();
 
-        // Si un utilisatur est trouvé
+        // If a user is found
         if ($result->num_rows == 1) {
             $user = $result->fetch_assoc();
 
-            // Vérification du mot de passe
+            // Password verification
             if (password_verify($password, $user['password'])) {
-                return $user; // Retourne les informations de l'utilisateur
+                return $user; // Returns user information
             }
         }
-        return null; // Si l'utilisateur n'existe pas ou mot de passe incorrect
+        return null; // If user does not exist or incorrect password
     }
 
-    // Méthode pour obtenir les informations d'un utilisateur par son ID
+    // Method for obtaining user information by ID
     public function getUserById($id) {
         $stmt = $this->conn->prepare("SELECT * FROM utilisateurs WHERE id = ?");
         $stmt->bind_param("i", $id);
         $stmt->execute();
-        return $stmt->get_result()->fetch_assoc(); // Retourne les informations de l'utilisateur
+        return $stmt->get_result()->fetch_assoc(); // Returns user information
     }
 
-    // Méthode pour mettre à jour les informations d'un utilisateur
+    // How to update user information
     public function update($id, $login, $email, $firstname, $lastname) {
         $stmt = $this->conn->prepare("UPDATE utilisateurs SET login = ?, email = ?, firstname = ?, lastname = ? WHERE id = ?");
         $stmt->bind_param("ssssi", $login, $email, $firstname, $lastname, $id);
-        return $stmt->execute(); // Retourne vrai si la mise à jour a réussi
+        return $stmt->execute(); // Returns true if the update was successful
     }
 
-    // Méthode pour supprimer un utilisateur par son ID
+    // How to delete a user by ID
     public function delete($id) {
         $stmt = $this->conn->prepare("DELETE FROM utilisateurs WHERE id = ?");
         $stmt->bind_param("i", $id);
-        return $stmt->execute(); // Retourne vrai si la suppression a réussi
+        return $stmt->execute(); // Returns true if deletion was successful
     }
 
-    // Destructeur de la classe, ferme la connexion à la base de données
+    // Class destructor, closes database connection
     public function __destruct() {
         $this->conn->close();
     }
