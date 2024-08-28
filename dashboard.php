@@ -1,31 +1,31 @@
 <?php
-require_once 'auth.php'; // Inclusion des fonctions d'authentification
-require_once 'User.php'; // Inclusion de la classe User
+require_once 'auth.php'; // Inclusion of authentication functions
+require_once 'User.php'; // Inclusion of the User class
 
-redirectIfNotLoggedIn(); // Redirection si l'utilisateur n'est pas connecté
+redirectIfNotLoggedIn(); // Redirection if user not logged in
 
-$user = new User("localhost", "root", "", "classes"); // Création d'un objet User
-$user_data = $user->getUserById($_SESSION['user_id']); // Récupération des informations de l'utilisateur connecté
+$user = new User("localhost", "root", "", "classes"); // Creating a User object
+$user_data = $user->getUserById($_SESSION['user_id']); // Retrieve information from logged-in user
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Vérifie si le formulaire a été soumis
-    if (isset($_POST['update'])) { // Si le formulaire de mise à jour a été soumis
+if ($_SERVER['REQUEST_METHOD'] == 'POST') { // Checks if the form has been submitted
+    if (isset($_POST['update'])) { // If the update form has been submitted
         $login = $_POST['login'];
         $email = $_POST['email'];
         $firstname = $_POST['firstname'];
         $lastname = $_POST['lastname'];
 
-        // Appel de la méthode update pour mettre à jour les informations de l'utilisateur
+        // Call update method to update user information
         if ($user->update($user_data['id'], $login, $email, $firstname, $lastname)) {
-            $success = "Mise à jour réussie."; // Message de succès
-            $user_data = $user->getUserById($user_data['id']); // Récupération des données mises à jour
+            $success = "Mise à jour réussie."; // Success message
+            $user_data = $user->getUserById($user_data['id']); // Retrieving updated data
         } else {
-            $error = "Erreur lors de la mise à jour."; // Message d'erreur
+            $error = "Erreur lors de la mise à jour."; // Error message
         }
-    } elseif (isset($_POST['delete'])) { // Si le formulaire de suppression a été soumis
+    } elseif (isset($_POST['delete'])) { // If the deletion form has been submitted
         if ($user->delete($user_data['id'])) {
-            logout(); // Déconnexion après suppression du compte
+            logout(); // Logout after account deletion
         } else {
-            $error = "Erreur lors de la suppression."; // Message d'erreur
+            $error = "Erreur lors de la suppression."; // Error message
         }
     }
 } ?>
